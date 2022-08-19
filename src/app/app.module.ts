@@ -1,18 +1,35 @@
+// Angular
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
-import { AppRoutingModule } from './app-routing.module';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+// Libraries
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+// App
+import { AppRoutingModule, MaterialModule } from './module';
 import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+// Translate
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserModule,/* First */
+    HttpClientModule,
+    MaterialModule,
+    TranslateModule.forRoot({defaultLanguage: 'en',
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient],
+      },
+    }),
+    AppRoutingModule/* Last */
   ],
   providers: [],
   bootstrap: [AppComponent]
